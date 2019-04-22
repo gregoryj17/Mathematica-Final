@@ -1,0 +1,566 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     23052,        558]
+NotebookOptionsPosition[     21992,        532]
+NotebookOutlinePosition[     22336,        547]
+CellTagsIndexPosition[     22293,        544]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"rollDice", "[", "numdice_", "]"}], ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"dice", "=", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+       "}"}]}], ";", 
+     RowBox[{"roll", " ", "=", " ", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"RandomInteger", "[", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "6"}], "}"}], "]"}], ",", "numdice"}], "]"}]}], 
+     ";", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"dice", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], "=", 
+        RowBox[{"Count", "[", 
+         RowBox[{"roll", ",", "i"}], "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ";", 
+     "dice"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rawToOcc", "[", "rawdice_", "]"}], " ", ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"dice", "=", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+       "}"}]}], ";", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"dice", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], "=", 
+        RowBox[{"Count", "[", 
+         RowBox[{"rawdice", ",", "i"}], "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], " ", ";",
+      "dice"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"occToRaw", "[", "occdice_", "]"}], ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"dice", "=", 
+      RowBox[{"{", "}"}]}], ";", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"dice", ",", "i"}], "]"}], ",", 
+         RowBox[{"occdice", "[", 
+          RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"Length", "[", "occdice", "]"}], ",", "1"}], "}"}]}], "]"}], 
+     ";", "dice"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"reroll", "[", 
+    RowBox[{"olddice_", ",", " ", "scoringNumber_"}], "]"}], ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"numDice", "=", 
+      RowBox[{
+       RowBox[{"Plus", "@@", "olddice"}], "-", 
+       RowBox[{"olddice", "[", 
+        RowBox[{"[", "scoringNumber", "]"}], "]"}]}]}], ";", 
+     RowBox[{"newroll", " ", "=", " ", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"RandomInteger", "[", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "6"}], "}"}], "]"}], ",", "numDice"}], "]"}]}], 
+     ";", 
+     RowBox[{"newdice", "=", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+       "}"}]}], ";", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"newdice", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], "=", 
+        RowBox[{"Count", "[", 
+         RowBox[{"newroll", ",", "i"}], "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ";", 
+     RowBox[{
+      RowBox[{"newdice", "[", 
+       RowBox[{"[", "scoringNumber", "]"}], "]"}], "+=", 
+      RowBox[{"olddice", "[", 
+       RowBox[{"[", "scoringNumber", "]"}], "]"}]}], ";", "newdice"}], 
+    ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"multiReroll", "[", 
+    RowBox[{"numRolls_", ",", "prevdice_", ",", "sN_"}], "]"}], ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"retdice", "=", "prevdice"}], ";", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"retdice", "=", 
+        RowBox[{"reroll", "[", 
+         RowBox[{"retdice", ",", "sN"}], "]"}]}], ",", "numRolls"}], "]"}], 
+     ";", "retdice"}], ")"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"averageReroll", "[", 
+    RowBox[{"numRerolls_", ",", "numrolls_", ",", "startdice_", ",", "sn_"}], 
+    "]"}], ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"totdice", "=", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+       "}"}]}], ";", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"totdice", "+=", 
+        RowBox[{"multiReroll", "[", 
+         RowBox[{"numrolls", ",", "startdice", ",", "sn"}], "]"}]}], ",", 
+       "numRerolls"}], "]"}], ";", 
+     RowBox[{"totdice", "/", "numRerolls"}]}], ")"}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.764352229508698*^9, 3.7643522339332743`*^9}, {
+   3.764353207327861*^9, 3.764353323483066*^9}, {3.764353359076827*^9, 
+   3.7643534324375806`*^9}, {3.7643535140574207`*^9, 
+   3.7643535142072754`*^9}, {3.7643545438148403`*^9, 3.7643545465744305`*^9}, 
+   3.764893349712695*^9, {3.7648947504254136`*^9, 3.764894772900753*^9}, {
+   3.764894805443239*^9, 3.764894815742838*^9}, {3.7648948677392745`*^9, 
+   3.7648949825520515`*^9}, {3.7648958402125483`*^9, 3.764895959014157*^9}, {
+   3.7648960054369907`*^9, 3.7648962555371327`*^9}, 3.7648962920266585`*^9, {
+   3.7648964526795716`*^9, 3.764896523041045*^9}, {3.764896663126096*^9, 
+   3.764896771029223*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"b6d8dda4-5409-4772-961f-24d703926e56"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"rawToOcc", "[", 
+  RowBox[{"{", 
+   RowBox[{"1", ",", "2", ",", "3", ",", "4", ",", "5"}], "}"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.764353449171953*^9, 3.7643534517651887`*^9}, {
+  3.764353562093454*^9, 3.764353632908673*^9}, {3.764354490752221*^9, 
+  3.764354500772419*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"f651cfae-63e2-4678-a037-6c1ac49f7a52"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1", ",", "1", ",", "1", ",", "1", ",", "1", ",", "0"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.76489336086759*^9},
+ CellLabel->"Out[8]=",ExpressionUUID->"3994972c-8603-47a2-ac7a-307563de7a2a"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"multiReroll", "[", 
+  RowBox[{"3", ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "1", ",", "1", ",", "1", ",", "1", ",", "0"}], "}"}], 
+   ",", "1"}], "]"}]], "Input",
+ CellChangeTimes->{{3.764893357596181*^9, 3.764893368384448*^9}, {
+  3.7648950956680264`*^9, 3.7648951761945057`*^9}},
+ CellLabel->"In[28]:=",ExpressionUUID->"3964999e-1a6c-4765-a120-8ea2a86c69dc"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"3", ",", "0", ",", "1", ",", "1", ",", "0", ",", "0"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.764895112646716*^9, 3.7648951815809126`*^9}},
+ CellLabel->"Out[28]=",ExpressionUUID->"bef03328-e14f-4967-81b7-d2a27afcfe00"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.7648933641528935`*^9, 
+  3.7648933641627865`*^9}},ExpressionUUID->"d55d8a90-f7f7-4201-899f-\
+906c6ce1c09c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"diceArray", "=", 
+     RowBox[{"{", 
+      RowBox[{
+      "dieOne", ",", "dieTwo", ",", "dieThree", ",", "dieFour", ",", 
+       "dieFive"}], "}"}]}], ";", 
+    RowBox[{"occDiceArray", "=", 
+     RowBox[{"rawToOcc", "[", "diceArray", "]"}]}], ";", " ", 
+    RowBox[{"expNum", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"0", "\[Rule]", 
+        RowBox[{
+         RowBox[{"averageReroll", "[", 
+          RowBox[{"25", ",", "3", ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "5", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+            "}"}], ",", "1"}], "]"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+       RowBox[{"1", "\[Rule]", 
+        RowBox[{
+         RowBox[{"averageReroll", "[", 
+          RowBox[{"25", ",", "3", ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "4", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+            "}"}], ",", "1"}], "]"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+       RowBox[{"2", "\[Rule]", 
+        RowBox[{
+         RowBox[{"averageReroll", "[", 
+          RowBox[{"25", ",", "3", ",", 
+           RowBox[{"{", 
+            RowBox[{"2", ",", "3", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+            "}"}], ",", "1"}], "]"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+       RowBox[{"3", "\[Rule]", 
+        RowBox[{
+         RowBox[{"averageReroll", "[", 
+          RowBox[{"25", ",", "3", ",", 
+           RowBox[{"{", 
+            RowBox[{"3", ",", "2", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+            "}"}], ",", "1"}], "]"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+       RowBox[{"4", "\[Rule]", 
+        RowBox[{
+         RowBox[{"averageReroll", "[", 
+          RowBox[{"25", ",", "3", ",", 
+           RowBox[{"{", 
+            RowBox[{"4", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+            "}"}], ",", "1"}], "]"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+       RowBox[{"5", "\[Rule]", 
+        RowBox[{
+         RowBox[{"averageReroll", "[", 
+          RowBox[{"25", ",", "3", ",", 
+           RowBox[{"{", 
+            RowBox[{"5", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], 
+            "}"}], ",", "1"}], "]"}], "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}]}], "}"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"p", " ", "=", " ", 
+     RowBox[{"Predict", "[", "expNum", "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"predicted", " ", "=", " ", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"p", "[", 
+        RowBox[{"occDiceArray", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "6"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"maxPred", " ", "=", " ", 
+     RowBox[{"Max", "[", "predicted", "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"maxPredIndex", " ", "=", " ", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"maxPred", "==", 
+        RowBox[{"predicted", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}], ",", "1", ",", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"maxPred", "==", 
+          RowBox[{"predicted", "[", 
+           RowBox[{"[", "2", "]"}], "]"}]}], ",", "2", ",", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"maxPred", "==", 
+            RowBox[{"predicted", "[", 
+             RowBox[{"[", "3", "]"}], "]"}]}], ",", "3", ",", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"maxPred", "==", 
+              RowBox[{"predicted", "[", 
+               RowBox[{"[", "4", "]"}], "]"}]}], ",", "4", ",", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"maxPred", "==", 
+                RowBox[{"predicted", "[", 
+                 RowBox[{"[", "5", "]"}], "]"}]}], ",", "5", ",", "6"}], 
+              "]"}]}], "]"}]}], "]"}]}], "]"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"resultDiceArray", " ", "=", " ", 
+     RowBox[{"multiReroll", "[", 
+      RowBox[{"3", ",", "occDiceArray", ",", "score"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Column", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Row", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"\"\<Original Dice Occurences: \>\"", ",", "occDiceArray"}],
+           "}"}], ",", "\"\< \>\""}], "]"}], ",", 
+       RowBox[{"Row", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"\"\<Predicted Score: \>\"", ",", 
+           RowBox[{"predicted", "[", 
+            RowBox[{"[", "score", "]"}], "]"}]}], "}"}], ",", "\"\< \>\""}], 
+        "]"}], ",", 
+       RowBox[{"Row", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<Predicted highest score is \>\"", ",", "maxPredIndex", ",", 
+           "\"\< with a predicted score of \>\"", ",", "maxPred"}], "}"}], 
+         ",", "\"\< \>\""}], "]"}], ",", 
+       RowBox[{"Row", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<Resulting occurences scoring for \>\"", ",", "score", ",", 
+           "\"\<: \>\"", ",", "resultDiceArray"}], "}"}], ",", "\"\< \>\""}], 
+        "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Row", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"resultDiceArray", "[", 
+               RowBox[{"[", "score", "]"}], "]"}], ">", 
+              RowBox[{"predicted", "[", 
+               RowBox[{"[", "score", "]"}], "]"}]}], ",", 
+             "\"\<This exceeded the prediction by \>\"", ",", 
+             "\"\<This fell short of the prediction by \>\""}], "]"}], ",", 
+           RowBox[{"Abs", "[", 
+            RowBox[{
+             RowBox[{"resultDiceArray", "[", 
+              RowBox[{"[", "score", "]"}], "]"}], "-", 
+             RowBox[{"predicted", "[", 
+              RowBox[{"[", "score", "]"}], "]"}]}], "]"}]}], "}"}], ",", 
+         "\"\< \>\""}], "]"}]}], "}"}], "]"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"dieOne", ",", "1", ",", "\"\<Die 1\>\""}], "}"}], ",", "1", 
+     ",", "6", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"dieTwo", ",", "2", ",", "\"\<Die 2\>\""}], "}"}], ",", "1", 
+     ",", "6", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"dieThree", ",", "3", ",", "\"\<Die 3\>\""}], "}"}], ",", "1", 
+     ",", "6", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"dieFour", ",", "4", ",", "\"\<Die 4\>\""}], "}"}], ",", "1", 
+     ",", "6", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"dieFive", ",", "5", ",", "\"\<Die 5\>\""}], "}"}], ",", "1", 
+     ",", "6", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"score", ",", "6", ",", "\"\<Score\>\""}], "}"}], ",", "1", ",",
+      "6", ",", "1"}], "}"}], ",", 
+   RowBox[{"ContinuousAction", "\[Rule]", "False"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.7643538602284*^9, 3.7643538648574653`*^9}, {
+   3.764353972586988*^9, 3.7643541066918507`*^9}, {3.764354274595563*^9, 
+   3.764354278101544*^9}, 3.764354334426094*^9, {3.7648938192323785`*^9, 
+   3.764893862375925*^9}, {3.764894528953693*^9, 3.7648945300949197`*^9}, {
+   3.7648945821265364`*^9, 3.7648945994879246`*^9}, {3.764896624600913*^9, 
+   3.7648966361943007`*^9}, {3.7648967746156874`*^9, 
+   3.7648967902694006`*^9}, {3.7648969052741146`*^9, 3.764896909223901*^9}, {
+   3.7648969520385213`*^9, 3.76489699303421*^9}, {3.7648970504021597`*^9, 
+   3.764897050910564*^9}, {3.7648970929575753`*^9, 3.7648970998715434`*^9}, 
+   3.764897184281901*^9, {3.7648972257650537`*^9, 3.764897253960543*^9}, {
+   3.76489745433212*^9, 3.7648975359243584`*^9}, {3.7648977121301737`*^9, 
+   3.7648977438239303`*^9}, {3.764897792755966*^9, 3.7648978055338473`*^9}, {
+   3.7648978373419256`*^9, 3.7648978706945114`*^9}, {3.7648980393828335`*^9, 
+   3.7648980483696947`*^9}, {3.764898111263281*^9, 3.7648981468747993`*^9}, {
+   3.764898196824297*^9, 3.7648982850474963`*^9}, {3.7648983379071116`*^9, 
+   3.7648983466808996`*^9}, {3.7648986215870843`*^9, 
+   3.7648987339226007`*^9}, {3.764898833546936*^9, 3.76489895027834*^9}, {
+   3.764898992983423*^9, 3.764899103816677*^9}, {3.764899195076352*^9, 
+   3.764899289776824*^9}},
+ CellLabel->"In[33]:=",ExpressionUUID->"7c7f8199-d311-4990-a226-17ec9fb9a1f6"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`dieFive$$ = 5, $CellContext`dieFour$$ = 
+    4, $CellContext`dieOne$$ = 6, $CellContext`dieThree$$ = 
+    3, $CellContext`dieTwo$$ = 6, $CellContext`score$$ = 1, Typeset`show$$ = 
+    True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`dieOne$$], 1, "Die 1"}, 1, 6, 1}, {{
+       Hold[$CellContext`dieTwo$$], 2, "Die 2"}, 1, 6, 1}, {{
+       Hold[$CellContext`dieThree$$], 3, "Die 3"}, 1, 6, 1}, {{
+       Hold[$CellContext`dieFour$$], 4, "Die 4"}, 1, 6, 1}, {{
+       Hold[$CellContext`dieFive$$], 5, "Die 5"}, 1, 6, 1}, {{
+       Hold[$CellContext`score$$], 6, "Score"}, 1, 6, 1}}, Typeset`size$$ = {
+    440., {37., 43.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`dieOne$3258006$$ = 
+    0, $CellContext`dieTwo$3258007$$ = 0, $CellContext`dieThree$3258008$$ = 
+    0, $CellContext`dieFour$3258009$$ = 0, $CellContext`dieFive$3258010$$ = 
+    0, $CellContext`score$3258011$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`dieFive$$ = 5, $CellContext`dieFour$$ = 
+        4, $CellContext`dieOne$$ = 1, $CellContext`dieThree$$ = 
+        3, $CellContext`dieTwo$$ = 2, $CellContext`score$$ = 6}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`dieOne$$, $CellContext`dieOne$3258006$$, 0], 
+        Hold[$CellContext`dieTwo$$, $CellContext`dieTwo$3258007$$, 0], 
+        Hold[$CellContext`dieThree$$, $CellContext`dieThree$3258008$$, 0], 
+        Hold[$CellContext`dieFour$$, $CellContext`dieFour$3258009$$, 0], 
+        Hold[$CellContext`dieFive$$, $CellContext`dieFive$3258010$$, 0], 
+        Hold[$CellContext`score$$, $CellContext`score$3258011$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`diceArray = {$CellContext`dieOne$$, \
+$CellContext`dieTwo$$, $CellContext`dieThree$$, $CellContext`dieFour$$, \
+$CellContext`dieFive$$}; $CellContext`occDiceArray = \
+$CellContext`rawToOcc[$CellContext`diceArray]; $CellContext`expNum = {
+         0 -> Part[
+            $CellContext`averageReroll[25, 3, {0, 5, 0, 0, 0, 0}, 1], 1], 1 -> 
+          Part[
+            $CellContext`averageReroll[25, 3, {1, 4, 0, 0, 0, 0}, 1], 1], 2 -> 
+          Part[
+            $CellContext`averageReroll[25, 3, {2, 3, 0, 0, 0, 0}, 1], 1], 3 -> 
+          Part[
+            $CellContext`averageReroll[25, 3, {3, 2, 0, 0, 0, 0}, 1], 1], 4 -> 
+          Part[
+            $CellContext`averageReroll[25, 3, {4, 1, 0, 0, 0, 0}, 1], 1], 5 -> 
+          Part[
+            $CellContext`averageReroll[25, 3, {5, 0, 0, 0, 0, 0}, 1], 
+            1]}; $CellContext`p = 
+        Predict[$CellContext`expNum]; $CellContext`predicted = Table[
+          $CellContext`p[
+           Part[$CellContext`occDiceArray, $CellContext`i]], {$CellContext`i, 
+           1, 6}]; $CellContext`maxPred = 
+        Max[$CellContext`predicted]; $CellContext`maxPredIndex = 
+        If[$CellContext`maxPred == Part[$CellContext`predicted, 1], 1, 
+          If[$CellContext`maxPred == Part[$CellContext`predicted, 2], 2, 
+           If[$CellContext`maxPred == Part[$CellContext`predicted, 3], 3, 
+            If[$CellContext`maxPred == Part[$CellContext`predicted, 4], 4, 
+             
+             If[$CellContext`maxPred == Part[$CellContext`predicted, 5], 5, 
+              6]]]]]; $CellContext`resultDiceArray = $CellContext`multiReroll[
+         3, $CellContext`occDiceArray, $CellContext`score$$]; Column[{
+          Row[{"Original Dice Occurences: ", $CellContext`occDiceArray}, " "], 
+          Row[{"Predicted Score: ", 
+            Part[$CellContext`predicted, $CellContext`score$$]}, " "], 
+          Row[{
+           "Predicted highest score is ", $CellContext`maxPredIndex, 
+            " with a predicted score of ", $CellContext`maxPred}, " "], 
+          
+          Row[{"Resulting occurences scoring for ", $CellContext`score$$, 
+            ": ", $CellContext`resultDiceArray}, " "], 
+          Row[{
+            If[
+            Part[$CellContext`resultDiceArray, $CellContext`score$$] > 
+             Part[$CellContext`predicted, $CellContext`score$$], 
+             "This exceeded the prediction by ", 
+             "This fell short of the prediction by "], 
+            Abs[
+            Part[$CellContext`resultDiceArray, $CellContext`score$$] - 
+             Part[$CellContext`predicted, $CellContext`score$$]]}, " "]}]), 
+      "Specifications" :> {{{$CellContext`dieOne$$, 1, "Die 1"}, 1, 6, 
+         1}, {{$CellContext`dieTwo$$, 2, "Die 2"}, 1, 6, 
+         1}, {{$CellContext`dieThree$$, 3, "Die 3"}, 1, 6, 
+         1}, {{$CellContext`dieFour$$, 4, "Die 4"}, 1, 6, 
+         1}, {{$CellContext`dieFive$$, 5, "Die 5"}, 1, 6, 
+         1}, {{$CellContext`score$$, 6, "Score"}, 1, 6, 1}}, 
+      "Options" :> {ContinuousAction -> False}, "DefaultOptions" :> {}],
+     ImageSizeCache->{491., {154., 160.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.7648981489710307`*^9, {3.764898258935996*^9, 3.7648982855773373`*^9}, 
+   3.7648984125526543`*^9, {3.7648989002650876`*^9, 3.7648989506532965`*^9}, 
+   3.764899108293174*^9, 3.7648992048167734`*^9, 3.7648992918908973`*^9},
+ CellLabel->"Out[33]=",ExpressionUUID->"0d493d3e-f819-4f85-adc0-374653bb0c79"]
+}, Open  ]]
+},
+WindowSize->{2560, 1357},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 5266, 144, 143, "Input",ExpressionUUID->"b6d8dda4-5409-4772-961f-24d703926e56"],
+Cell[CellGroupData[{
+Cell[5849, 168, 385, 8, 28, "Input",ExpressionUUID->"f651cfae-63e2-4678-a037-6c1ac49f7a52"],
+Cell[6237, 178, 235, 5, 32, "Output",ExpressionUUID->"3994972c-8603-47a2-ac7a-307563de7a2a"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6509, 188, 388, 8, 28, "Input",ExpressionUUID->"3964999e-1a6c-4765-a120-8ea2a86c69dc"],
+Cell[6900, 198, 263, 5, 32, "Output",ExpressionUUID->"bef03328-e14f-4967-81b7-d2a27afcfe00"]
+}, Open  ]],
+Cell[7178, 206, 156, 3, 28, "Input",ExpressionUUID->"d55d8a90-f7f7-4201-899f-906c6ce1c09c"],
+Cell[CellGroupData[{
+Cell[7359, 213, 8614, 207, 219, "Input",ExpressionUUID->"7c7f8199-d311-4990-a226-17ec9fb9a1f6"],
+Cell[15976, 422, 6000, 107, 333, "Output",ExpressionUUID->"0d493d3e-f819-4f85-adc0-374653bb0c79"]
+}, Open  ]]
+}
+]
+*)
+
