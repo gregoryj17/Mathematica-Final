@@ -1,0 +1,1 @@
+My final project for my course in Mathematica. Using Yahtzee dice rolling rules to play with Mathematica's machine learning capabilities.
